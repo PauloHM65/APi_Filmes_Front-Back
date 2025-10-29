@@ -1,0 +1,104 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Meu Dashboard</h2>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="stats$ | async as stats; else loading">
+    <!-- Simple Stats Cards -->
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+          <div class="card-header">Total de Buscas</div>
+          <div class="card-body">
+            <h4 class="card-title">{{ stats.totalSearches }}</h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+          <div class="card-header">Nota Média</div>
+          <div class="card-body">
+            <h4 class="card-title">{{ stats.averageRating | number:'1.1-1' }} / 5</h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-white bg-info mb-3">
+          <div class="card-header">Gênero Favorito</div>
+          <div class="card-body">
+            <h4 class="card-title">{{ stats.topGenre }}</h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+          <div class="card-header">Década Favorita</div>
+          <div class="card-body">
+            <h4 class="card-title">{{ stats.favoriteDecade }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            Distribuição de Gêneros (Favoritos)
+          </div>
+          <div class="card-body">
+            <div *ngIf="genreChartData$ | async as genreData">
+                 <ngx-charts-bar-vertical
+                    [view]="[500, 400]"
+                    [results]="genreData"
+                    [scheme]="colorScheme"
+                    [xAxis]="showXAxis"
+                    [yAxis]="showYAxis"
+                    [legend]="false"
+                    [showXAxisLabel]="showXAxisLabel"
+                    [showYAxisLabel]="showYAxisLabel"
+                    [xAxisLabel]="xAxisLabelGenre"
+                    [yAxisLabel]="yAxisLabel">
+                </ngx-charts-bar-vertical>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            Linha do Tempo dos Filmes (Favoritos)
+          </div>
+          <div class="card-body">
+             <div *ngIf="yearChartData$ | async as yearData">
+                <ngx-charts-line-chart
+                    [view]="[500, 400]"
+                    [results]="yearData"
+                    [scheme]="colorScheme"
+                    [legend]="false"
+                    [xAxis]="showXAxis"
+                    [yAxis]="showYAxis"
+                    [showXAxisLabel]="showXAxisLabel"
+                    [showYAxisLabel]="showYAxisLabel"
+                    [xAxisLabel]="xAxisLabelYear"
+                    [yAxisLabel]="yAxisLabel">
+                </ngx-charts-line-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <ng-template #loading>
+    <div class="text-center mt-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </ng-template>
+</div>

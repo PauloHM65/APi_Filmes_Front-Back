@@ -1,0 +1,36 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Meus Filmes Favoritos</h2>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="favorites$ | async as favorites; else loading">
+    <div *ngIf="favorites.length > 0; else noFavorites" class="row">
+      <div *ngFor="let movie of favorites; trackBy: trackByImdbID" class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card h-100 shadow-sm movie-card" (click)="goToDetails(movie.imdbID)">
+          <img [src]="movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/300x450.png?text=No+Image'" class="card-img-top" [alt]="movie.Title">
+          <div class="card-body">
+            <h5 class="card-title">{{ movie.Title }}</h5>
+            <p class="card-text text-muted">{{ movie.Year }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noFavorites>
+      <div class="text-center mt-5">
+        <p class="lead">Você ainda não adicionou nenhum filme aos favoritos.</p>
+        <a routerLink="/" class="btn btn-primary">Buscar filmes</a>
+      </div>
+    </ng-template>
+  </div>
+
+  <ng-template #loading>
+    <div class="text-center mt-5">
+        <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+  </ng-template>
+</div>

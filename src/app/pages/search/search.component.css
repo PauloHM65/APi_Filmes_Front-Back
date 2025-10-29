@@ -1,0 +1,15 @@
+
+.movie-card {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.card-img-top {
+    height: 450px; /* Or any fixed height */
+    object-fit: cover;
+}
