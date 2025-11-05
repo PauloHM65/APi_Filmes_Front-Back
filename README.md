@@ -7,7 +7,7 @@
 
 ---
 
-# AppFilmes DTI - Desafio Full Stack
+# Proj_Filmes - Desafio Full Stack
 
 Esta é uma aplicação web full stack que permite aos usuários buscar filmes, favoritar, criar avaliações e visualizar estatísticas sobre seus hábitos cinematográficos.
 
