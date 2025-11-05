@@ -1,104 +1,75 @@
 <div class="container mt-4">
   <h2 class="mb-4">Meu Dashboard</h2>
 
+  <!-- Loading and Error States -->
+  <div *ngIf="isLoading" class="text-center mt-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
   <div *ngIf="error" class="alert alert-danger">
     {{ error }}
   </div>
 
-  <div *ngIf="stats$ | async as stats; else loading">
-    <!-- Simple Stats Cards -->
+  <!-- Dashboard Content -->
+  <div *ngIf="!isLoading && !error">
+    <!-- Row for Value Widgets -->
     <div class="row mb-4">
-      <div class="col-md-3">
-        <div class="card text-white bg-primary mb-3">
-          <div class="card-header">Total de Buscas</div>
-          <div class="card-body">
-            <h4 class="card-title">{{ stats.totalSearches }}</h4>
+      <ng-container *ngFor="let widget of widgets">
+        <div *ngIf="widget.type === 'value'" class="col-md-3">
+          <div class="card text-white bg-primary mb-3">
+            <div class="card-header">{{ widget.title }}</div>
+            <div class="card-body">
+              <h4 class="card-title">
+                {{ widget.data }} {{ widget.unit || '' }}
+              </h4>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card text-white bg-success mb-3">
-          <div class="card-header">Nota Média</div>
-          <div class="card-body">
-            <h4 class="card-title">{{ stats.averageRating | number:'1.1-1' }} / 5</h4>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card text-white bg-info mb-3">
-          <div class="card-header">Gênero Favorito</div>
-          <div class="card-body">
-            <h4 class="card-title">{{ stats.topGenre }}</h4>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card text-white bg-warning mb-3">
-          <div class="card-header">Década Favorita</div>
-          <div class="card-body">
-            <h4 class="card-title">{{ stats.favoriteDecade }}</h4>
-          </div>
-        </div>
-      </div>
+      </ng-container>
     </div>
 
-    <!-- Charts -->
+    <!-- Row for Chart Widgets -->
     <div class="row">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            Distribuição de Gêneros (Favoritos)
-          </div>
-          <div class="card-body">
-            <div *ngIf="genreChartData$ | async as genreData">
-                 <ngx-charts-bar-vertical
-                    [view]="[500, 400]"
-                    [results]="genreData"
-                    [scheme]="colorScheme"
-                    [xAxis]="showXAxis"
-                    [yAxis]="showYAxis"
-                    [legend]="false"
-                    [showXAxisLabel]="showXAxisLabel"
-                    [showYAxisLabel]="showYAxisLabel"
-                    [xAxisLabel]="xAxisLabelGenre"
-                    [yAxisLabel]="yAxisLabel">
-                </ngx-charts-bar-vertical>
+      <ng-container *ngFor="let widget of widgets">
+        <div *ngIf="widget.type === 'chart'" class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              {{ widget.title }}
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            Linha do Tempo dos Filmes (Favoritos)
-          </div>
-          <div class="card-body">
-             <div *ngIf="yearChartData$ | async as yearData">
-                <ngx-charts-line-chart
-                    [view]="[500, 400]"
-                    [results]="yearData"
-                    [scheme]="colorScheme"
-                    [legend]="false"
-                    [xAxis]="showXAxis"
-                    [yAxis]="showYAxis"
-                    [showXAxisLabel]="showXAxisLabel"
-                    [showYAxisLabel]="showYAxisLabel"
-                    [xAxisLabel]="xAxisLabelYear"
-                    [yAxisLabel]="yAxisLabel">
-                </ngx-charts-line-chart>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            <div class="card-body" [ngSwitch]="widget.chartType">
+              
+              <!-- Bar Chart -->
+              <ngx-charts-bar-horizontal *ngSwitchCase="'bar'"
+                [view]="[500, 400]"
+                [results]="widget.data"
+                [scheme]="colorScheme"
+                [xAxis]="showXAxis"
+                [yAxis]="showYAxis"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="'Quantidade'"
+                [yAxisLabel]="'Gênero'">
+              </ngx-charts-bar-horizontal>
 
+              <!-- Pie Chart -->
+              <ngx-charts-pie-chart *ngSwitchCase="'pie'"
+                [view]="[500, 400]"
+                [results]="widget.data"
+                [scheme]="colorScheme"
+                [legend]="true"
+                [labels]="true">
+              </ngx-charts-pie-chart>
+
+              <!-- You can add more chart types here as needed -->
+              <div *ngSwitchDefault>
+                Chart type '{{ widget.chartType }}' not implemented.
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
   </div>
-
-  <ng-template #loading>
-    <div class="text-center mt-5">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-  </ng-template>
 </div>

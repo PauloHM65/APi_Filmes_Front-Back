@@ -25,65 +25,90 @@ Esta é uma aplicação web full stack que permite aos usuários buscar filmes, 
 
 ## Como Executar a Aplicação
 
-Siga os passos abaixo para configurar e executar o projeto em sua máquina local.
+Existem duas maneiras de executar o projeto: **localmente** (ideal para desenvolvimento) ou via **Docker Compose** (ideal para simular um ambiente de produção e para facilidade de execução).
 
-### Pré-requisitos
+### Opção 1: Executando Localmente (Frontend e Backend separados)
 
-*   [Node.js](https://nodejs.org/) (versão 18 ou superior)
-*   [Angular CLI](https://angular.dev/tools/cli)
+Esta abordagem permite o hot-reload do frontend e um controle mais granular sobre cada parte da aplicação.
 
-### 1. Obtenha sua Chave da OMDb API
+**Pré-requisitos:**
+*   [Node.js](https://nodejs.org/) (versão 20 ou superior)
+*   [Angular CLI](https://angular.io/cli)
+*   Uma chave de API da OMDb. Obtenha uma gratuitamente em [omdbapi.com/apikey.aspx](https://omdbapi.com/apikey.aspx).
 
-A aplicação utiliza a OMDb API para buscar os dados dos filmes. É necessário obter uma chave de API gratuita.
+**Passos:**
 
-1.  Acesse [https://www.omdbapi.com/apikey.aspx](https://www.omdbapi.com/apikey.aspx).
-2.  Selecione o plano **FREE**.
-3.  Preencha seu e-mail e nome. Você receberá a chave por e-mail.
+1.  **Clone o repositório e instale as dependências:**
+    ```bash
+    # Clone este repositório
+    git clone <URL_DO_REPOSITORIO>
+    cd <NOME_DA_PASTA>
 
-### 2. Configure a Chave da API no Backend
+    # Instale as dependências do frontend
+    npm install
 
-1.  Abra o arquivo `backend/server.js`.
-2.  Encontre a seguinte linha de código (próximo à linha 40):
-
-    ```javascript
-    const apiKey = process.env.OMDB_API_KEY || 'YOUR_API_KEY';
+    # Instale as dependências do backend
+    npm install --prefix backend
     ```
 
-3.  Substitua `'YOUR_API_KEY'` pela chave que você recebeu por e-mail. Salve o arquivo.
+2.  **Configure as variáveis de ambiente:**
+    *   Crie um arquivo chamado `.env` na raiz do projeto.
+    *   Adicione a seguinte linha, substituindo `SUA_CHAVE_AQUI` pela sua chave da OMDb API:
+        ```
+        OMDB_API_KEY=SUA_CHAVE_AQUI
+        ```
 
-### 3. Instale as Dependências
+3.  **Execute o Backend (API):**
+    *   Em um terminal, execute o comando a partir da raiz do projeto:
+    ```bash
+    npm start --prefix backend
+    ```
+    *   O servidor backend estará rodando em `http://localhost:3000`.
 
-Execute os seguintes comandos na raiz do projeto para instalar as dependências do frontend e do backend:
+4.  **Execute o Frontend (Angular):**
+    *   **Em outro terminal**, execute o comando a partir da raiz do projeto:
+    ```bash
+    ng serve
+    ```
+    *   Abra seu navegador e acesse **`http://localhost:4200`**.
 
+---
+
+### Opção 2: Executando com Docker Compose (Recomendado para Simplicidade)
+
+Esta abordagem conteineriza o frontend e o backend, subindo toda a aplicação com um único comando.
+
+**Pré-requisitos:**
+*   [Docker](https://www.docker.com/products/docker-desktop/)
+*   [Docker Compose](https://docs.docker.com/compose/install/)
+*   Uma chave de API da OMDb (siga os passos da Opção 1 para obtê-la).
+
+**Passos:**
+
+1.  **Clone o repositório.**
+
+2.  **Configure as variáveis de ambiente:**
+    *   Crie um arquivo chamado `.env` na raiz do projeto.
+    *   Adicione a seguinte linha, substituindo `SUA_CHAVE_AQUI` pela sua chave da OMDb API:
+        ```
+        OMDB_API_KEY=SUA_CHAVE_AQUI
+        ```
+    *   O `docker-compose.yml` está configurado para ler este arquivo e injetar a variável de ambiente no contêiner do backend.
+
+3.  **Construa e suba os contêineres:**
+    *   Execute o seguinte comando na raiz do projeto:
+    ```bash
+    docker-compose up --build -d
+    ```
+    *   O comando `--build` força a reconstrução das imagens, e `-d` executa os contêineres em segundo plano.
+
+4.  **Acesse a aplicação:**
+    *   Abra seu navegador e acesse **`http://localhost:4200`**.
+
+Para parar a aplicação, execute:
 ```bash
-# Instalar dependências do frontend (Angular)
-npm install
-
-# Instalar dependências do backend (Express)
-cd backend
-npm install
-cd ..
+docker-compose down
 ```
-
-### 4. Execute o Backend
-
-Em um terminal, inicie o servidor do backend a partir da raiz do projeto:
-
-```bash
-npm --prefix backend start
-```
-
-O servidor estará em execução em `http://localhost:3000`.
-
-### 5. Execute o Frontend
-
-Em **outro terminal**, inicie a aplicação Angular:
-
-```bash
-ng serve
-```
-
-Abra seu navegador e acesse `http://localhost:4200/`. A aplicação estará pronta para uso.
 
 ---
 

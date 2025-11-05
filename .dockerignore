@@ -1,0 +1,22 @@
+# Dependências
+node_modules
+
+# Cache e saídas de build
+.angular
+dist
+
+# Código fonte de outros serviços
+backend
+
+# Git, configs do editor e arquivos de ambiente
+.git
+.vscode
+.editorconfig
+.env
+
+# Arquivos do Docker que não precisam entrar no build
+docker-compose.yml
+Dockerfile
+
+# Outros
+README.md
