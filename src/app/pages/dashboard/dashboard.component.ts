@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit {
     const valueWidgets: ValueWidget[] = [
       {
         type: 'value',
-        title: 'Total de Buscas',
+        title: 'Total de Punhetas',
         data: stats.totalSearches,
         icon: 'search', // Exemplo de ícone
       },
