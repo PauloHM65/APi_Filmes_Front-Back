@@ -34,16 +34,55 @@ Esta é uma aplicação web full stack que permite aos usuários buscar filmes, 
 
 ## Como Executar a Aplicação
 
-Existem duas maneiras de executar o projeto: **localmente** (ideal para desenvolvimento) ou via **Docker Compose** (ideal para simular um ambiente de produção e para facilidade de execução).
+Existem duas maneiras de executar o projeto: via **Docker Compose** (recomendado para facilidade de execução) ou **localmente** (ideal para desenvolvimento).
 
-### Opção 1: Executando Localmente (Frontend e Backend separados)
+**Pré-requisitos:**
+*   [Docker Desktop](https://www.docker.com/products/docker-desktop/) (já inclui o Docker Compose)
+*   Uma chave de API da OMDb. Obtenha uma gratuitamente em [omdbapi.com/apikey.aspx](https://omdbapi.com/apikey.aspx).
 
-Esta abordagem permite o hot-reload do frontend e um controle mais granular sobre cada parte da aplicação.
+### Opção 1: Executando com Docker Compose (Imagens do Docker Hub)
+
+Esta abordagem é a mais simples e recomendada. Ela conteineriza o frontend e o backend, subindo toda a aplicação com um único comando, utilizando imagens pré-construídas do Docker Hub.
+
+**Passos:**
+
+1.  **Prepare o Ambiente:**
+    *   Crie uma pasta dedicada para a aplicação no seu computador (ex: `meus-filmes`).
+    *   Faça o download do arquivo [`docker-compose.yml`](https://github.com/PauloHM65/site_filmes/blob/main/docker-compose.yml) deste repositório e salve-o dentro da pasta que você criou.
+
+2.  **Configure as Variáveis de Ambiente:**
+    *   Na mesma pasta, crie um arquivo de texto chamado `.env`.
+    *   Adicione a seguinte linha, substituindo `SUA_CHAVE_AQUI` pela sua chave da OMDb API:
+        ```
+        OMDB_API_KEY=SUA_CHAVE_AQUI
+        ```
+    *   O `docker-compose.yml` está configurado para ler este arquivo e injetar a variável de ambiente no contêiner do backend.
+
+3.  **Suba os contêineres:**
+    *   Abra seu terminal, navegue até a pasta que você criou e execute o seguinte comando:
+    ```bash
+    docker-compose up -d
+    ```
+    *   O Docker Compose irá baixar as imagens do Docker Hub (se não existirem localmente) e iniciar os serviços. O arquivo `db.json` será automaticamente criado na pasta `backend/data` se não existir.
+
+4.  **Acesse a aplicação:**
+    *   Abra seu navegador e acesse **`http://localhost:4200`**.
+
+Para parar a aplicação, execute:
+```bash
+docker-compose down
+```
+
+---
+
+### Opção 2: Executando Localmente (Frontend e Backend separados)
+
+Esta abordagem é ideal para desenvolvimento, pois permite o hot-reload do frontend e um controle mais granular sobre cada parte da aplicação.
 
 **Pré-requisitos:**
 *   [Node.js](https://nodejs.org/) (versão 20 ou superior)
 *   [Angular CLI](https://angular.io/cli)
-*   Uma chave de API da OMDb. Obtenha uma gratuitamente em [omdbapi.com/apikey.aspx](https://omdbapi.com/apikey.aspx).
+*   Uma chave de API da OMDb (siga os passos da Opção 1 para obtê-la).
 
 **Passos:**
 
@@ -80,44 +119,6 @@ Esta abordagem permite o hot-reload do frontend e um controle mais granular sobr
     ng serve
     ```
     *   Abra seu navegador e acesse **`http://localhost:4200`**.
-
----
-
-### Opção 2: Executando com Docker Compose (Recomendado para Simplicidade)
-
-Esta abordagem conteineriza o frontend e o backend, subindo toda a aplicação com um único comando.
-
-**Pré-requisitos:**
-*   [Docker](https://www.docker.com/products/docker-desktop/)
-*   [Docker Compose](https://docs.docker.com/compose/install/)
-*   Uma chave de API da OMDb (siga os passos da Opção 1 para obtê-la).
-
-**Passos:**
-
-1.  **Clone o repositório.**
-
-2.  **Configure as variáveis de ambiente:**
-    *   Crie um arquivo chamado `.env` na raiz do projeto.
-    *   Adicione a seguinte linha, substituindo `SUA_CHAVE_AQUI` pela sua chave da OMDb API:
-        ```
-        OMDB_API_KEY=SUA_CHAVE_AQUI
-        ```
-    *   O `docker-compose.yml` está configurado para ler este arquivo e injetar a variável de ambiente no contêiner do backend.
-
-3.  **Construa e suba os contêineres:**
-    *   Execute o seguinte comando na raiz do projeto:
-    ```bash
-    docker-compose up --build -d
-    ```
-    *   O comando `--build` força a reconstrução das imagens, e `-d` executa os contêineres em segundo plano.
-
-4.  **Acesse a aplicação:**
-    *   Abra seu navegador e acesse **`http://localhost:4200`**.
-
-Para parar a aplicação, execute:
-```bash
-docker-compose down
-```
 
 ---
 

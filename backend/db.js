@@ -8,6 +8,12 @@ const readDB = () => {
     const data = fs.readFileSync(DB_PATH, 'utf8');
     return JSON.parse(data);
   } catch (error) {
+    if (error.code === 'ENOENT') {
+      console.log('db.json not found. Creating a new one...');
+      const defaultData = { favorites: [], reviews: [], history: [] };
+      writeDB(defaultData);
+      return defaultData;
+    }
     console.error("Error reading database:", error);
     return { favorites: [], reviews: [], history: [] };
   }

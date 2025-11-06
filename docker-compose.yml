@@ -2,9 +2,7 @@ version: '3.8'
 
 services:
   frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: paoluhm65/appfilmes_frontend:latest
     ports:
       - "4200:80"
     container_name: appfilmes_frontend
@@ -12,9 +10,7 @@ services:
       - backend
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: paoluhm65/appfilmes_backend:latest
     ports:
       - "3000:3000"
     volumes:
