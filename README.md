@@ -48,7 +48,7 @@ Esta abordagem é a mais simples e recomendada. Ela conteineriza o frontend e o 
 
 1.  **Prepare o Ambiente:**
     *   Crie uma pasta dedicada para a aplicação no seu computador (ex: `meus-filmes`).
-    *   Faça o download do arquivo [`docker-compose.yml`](https://github.com/PauloHM65/site_filmes/blob/main/docker-compose.yml) deste repositório e salve-o dentro da pasta que você criou.
+    *   Faça o download do arquivo [`docker-compose.yml`](https://github.com/PauloHM65/site_filmes/blob/main/docker-compose.yml) (<- link) deste repositório e salve-o dentro da pasta que você criou.
 
 2.  **Configure as Variáveis de Ambiente:**
     *   Na mesma pasta, crie um arquivo de texto chamado `.env`.
